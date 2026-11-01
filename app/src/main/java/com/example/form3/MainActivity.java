@@ -1,8 +1,6 @@
 package com.example.form3;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -16,7 +14,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.form3.R;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -30,7 +27,21 @@ public class MainActivity extends AppCompatActivity {
     private SeekBar sbQuantity;
     private TextView tvQuantityValue, tvSummary;
     private EditText etAddress;
-    private Button btnSubmit;
+    private Button btnSubmit, btnClear;
+
+
+    private static class FormState {
+        int crustPosition;
+        int selectedSizeId;
+        boolean cheeseChecked;
+        boolean mushroomChecked;
+        boolean hamChecked;
+        int quantity;
+        String address;
+        String summaryText;
+    }
+
+    private FormState lastState = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         tvQuantityValue = findViewById(R.id.tvQuantityValue);
         etAddress = findViewById(R.id.etAddress);
         btnSubmit = findViewById(R.id.btnSubmit);
+        btnClear = findViewById(R.id.btnClear);
         tvSummary = findViewById(R.id.tvSummary);
     }
 
@@ -65,11 +77,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUpListeners() {
-
         sbQuantity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
                 int currentVal = progress < 1 ? 1 : progress;
                 tvQuantityValue.setText(String.valueOf(currentVal));
             }
@@ -81,27 +91,29 @@ public class MainActivity extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) { }
         });
 
-
         btnSubmit.setOnClickListener(v -> {
             if (validateForm()) {
                 askForConfirmation();
             }
         });
+
+
+        btnClear.setOnClickListener(v -> askForClearConfirmation());
     }
 
     private boolean validateForm() {
+
+        etAddress.setError(null);
 
         if (spCrust.getSelectedItemPosition() == 0) {
             Toast.makeText(this, R.string.error_crust, Toast.LENGTH_SHORT).show();
             return false;
         }
 
-
         if (rgSize.getCheckedRadioButtonId() == -1) {
             Toast.makeText(this, R.string.error_size, Toast.LENGTH_SHORT).show();
             return false;
         }
-
 
         String address = etAddress.getText().toString().trim();
         if (address.isEmpty()) {
@@ -128,6 +140,66 @@ public class MainActivity extends AppCompatActivity {
         Snackbar.make(findViewById(R.id.main), R.string.sent, Snackbar.LENGTH_LONG)
                 .setAction(R.string.undo, v -> tvSummary.setText(""))
                 .show();
+    }
+
+
+    private void askForClearConfirmation() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.clear_confirm_title)
+                .setMessage(R.string.clear_confirm_message)
+                .setPositiveButton(R.string.yes, (dialog, which) -> clearForm())
+                .setNegativeButton(R.string.no, null)
+                .show();
+    }
+
+
+    private void clearForm() {
+
+        lastState = new FormState();
+        lastState.crustPosition = spCrust.getSelectedItemPosition();
+        lastState.selectedSizeId = rgSize.getCheckedRadioButtonId();
+        lastState.cheeseChecked = cbCheese.isChecked();
+        lastState.mushroomChecked = cbMushroom.isChecked();
+        lastState.hamChecked = cbHam.isChecked();
+        lastState.quantity = sbQuantity.getProgress();
+        lastState.address = etAddress.getText().toString();
+        lastState.summaryText = tvSummary.getText().toString();
+
+
+        spCrust.setSelection(0);
+        rgSize.clearCheck();
+        cbCheese.setChecked(false);
+        cbMushroom.setChecked(false);
+        cbHam.setChecked(false);
+        sbQuantity.setProgress(0);
+        etAddress.setText("");
+        tvSummary.setText("");
+
+
+        etAddress.setError(null);
+
+
+        Snackbar.make(findViewById(R.id.main), R.string.cleared, Snackbar.LENGTH_LONG)
+                .setAction(R.string.undo, v -> restoreFormState())
+                .show();
+    }
+
+
+    private void restoreFormState() {
+        if (lastState != null) {
+            spCrust.setSelection(lastState.crustPosition);
+            if (lastState.selectedSizeId != -1) {
+                rgSize.check(lastState.selectedSizeId);
+            } else {
+                rgSize.clearCheck();
+            }
+            cbCheese.setChecked(lastState.cheeseChecked);
+            cbMushroom.setChecked(lastState.mushroomChecked);
+            cbHam.setChecked(lastState.hamChecked);
+            sbQuantity.setProgress(lastState.quantity);
+            etAddress.setText(lastState.address);
+            tvSummary.setText(lastState.summaryText);
+        }
     }
 
     private String buildSummary() {

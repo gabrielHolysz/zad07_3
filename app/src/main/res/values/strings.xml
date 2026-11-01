@@ -39,6 +39,11 @@
     <string name="yes_short">tak</string>
     <string name="no_short">nie</string>
 
+    <string name="btn_clear">WYCZYŚĆ FORMULARZ</string>
+    <string name="clear_confirm_title">Wyczyścić formularz?</string>
+    <string name="clear_confirm_message">Wszystkie wpisane dane zostaną utracone.</string>
+    <string name="cleared">Wyczyszczono formularz</string>
+
     <string-array name="crusts">
         <item>-- wybierz rodzaj ciasta --</item>
         <item>Cienkie</item>
