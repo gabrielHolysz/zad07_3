@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name">Zamówienie Pizzy</string>
+
+    <string name="header">Kreator Zamówienia Pizzy</string>
+    <string name="label_crust">Rodzaj ciasta</string>
+    <string name="label_size">Rozmiar pizzy</string>
+    <string name="label_extras">Dodatki (wybierz składniki)</string>
+    <string name="label_quantity">Liczba sztuk</string>
+    <string name="label_address">Adres dostawy</string>
+
+    <string name="crust_thin">Cienkie</string>
+    <string name="crust_thick">Grube</string>
+    <string name="crust_stuffed">Z serem w brzegach</string>
+
+    <string name="size_small">Mała (30 cm)</string>
+    <string name="size_medium">Średnia (40 cm)</string>
+    <string name="size_large">Duża (50 cm)</string>
+
+    <string name="extra_cheese">Dodatkowy ser</string>
+    <string name="extra_mushroom">Pieczarki</string>
+    <string name="extra_ham">Szynka</string>
+
+    <string name="hint_address">ul. Prosta 12/3, Miasto</string>
+    <string name="btn_submit">ZŁÓŻ ZAMÓWIENIE</string>
+
+    <string name="error_crust">Wybierz rodzaj ciasta z listy</string>
+    <string name="error_size">Zaznacz rozmiar pizzy</string>
+    <string name="error_address">Podaj adres dostawy</string>
+
+    <string name="confirm_title">Potwierdzenie zamówienia</string>
+    <string name="confirm_message">Czy na pewno chcesz złożyć zamówienie na tę pizzę?</string>
+    <string name="yes">Tak, zamawiam</string>
+    <string name="no">Popraw</string>
+
+    <string name="sent">Zamówienie zostało złożone!</string>
+    <string name="undo">Cofnij</string>
+
+    <string name="summary_format">Ciasto: %1$s\nRozmiar: %2$s\nDodatki: %3$s\nIlość: %4$d\nAdres: %5$s</string>
+    <string name="yes_short">tak</string>
+    <string name="no_short">nie</string>
+
+    <string-array name="crusts">
+        <item>-- wybierz rodzaj ciasta --</item>
+        <item>Cienkie</item>
+        <item>Grube</item>
+        <item>Z serem w brzegach</item>
+    </string-array>
+</resources>
